@@ -1,5 +1,6 @@
 package com.parkit.parkingsystem.dao;
 
+import com.mysql.cj.xdevapi.Result;
 import com.parkit.parkingsystem.config.DataBaseConfig;
 import com.parkit.parkingsystem.constants.DBConstants;
 import com.parkit.parkingsystem.constants.ParkingType;
@@ -68,6 +69,30 @@ public class TicketDAO {
             return ticket;
         }
     }
+    
+    public int getNbTicket(String vehicleRegNumber) {
+        Connection con = null;
+        int ticketCount = 0;
+
+        try {
+            con = dataBaseConfig.getConnection();
+            PreparedStatement ps = con.prepareStatement(DBConstants.GET_TICKET_COUNT);
+            ps.setString(1, vehicleRegNumber);
+            ResultSet rs = ps.executeQuery();
+            
+            if(rs.next()) {
+                ticketCount = rs.getInt(1);
+            }
+            dataBaseConfig.closeResultSet(rs);
+            dataBaseConfig.closePreparedStatement(ps);
+        } catch(Exception error) {
+            logger.error("Error counting the tickets per vehicle", error);
+        } finally {
+            dataBaseConfig.closeConnection(con);
+        }
+
+        return ticketCount ; 
+    }
 
     public boolean updateTicket(Ticket ticket) {
         Connection con = null;
@@ -86,4 +111,6 @@ public class TicketDAO {
         }
         return false;
     }
+
+    
 }
