@@ -1,6 +1,5 @@
 package com.parkit.parkingsystem.dao;
 
-import com.mysql.cj.xdevapi.Result;
 import com.parkit.parkingsystem.config.DataBaseConfig;
 import com.parkit.parkingsystem.constants.DBConstants;
 import com.parkit.parkingsystem.constants.ParkingType;
@@ -37,8 +36,9 @@ public class TicketDAO {
             logger.error("Error fetching next available slot",ex);
         }finally {
             dataBaseConfig.closeConnection(con);
-            return false;
-        }
+        }  
+        return false;
+
     }
 
     public Ticket getTicket(String vehicleRegNumber) {
@@ -66,8 +66,9 @@ public class TicketDAO {
             logger.error("Error fetching next available slot",ex);
         }finally {
             dataBaseConfig.closeConnection(con);
-            return ticket;
+           
         }
+        return ticket;
     }
     
     public int getNbTicket(String vehicleRegNumber) {
@@ -75,8 +76,10 @@ public class TicketDAO {
         int ticketCount = 0;
 
         try {
-            con = dataBaseConfig.getConnection();
-            PreparedStatement ps = con.prepareStatement(DBConstants.GET_TICKET_COUNT);
+            con = dataBaseConfig.getConnection(); // connexion a la base prod
+            PreparedStatement ps = con.prepareStatement(DBConstants.GET_TICKET_COUNT); // preparer la requete en specifiant que lon veut les occurences de VEHICLE_REG_NUMBER = ?"
+            //on veut remplacer ? de la requete par vehicleNumber 
+            // les methodes setString() permettent de securise la requete et d'eviter les injections SQL
             ps.setString(1, vehicleRegNumber);
             ResultSet rs = ps.executeQuery();
             

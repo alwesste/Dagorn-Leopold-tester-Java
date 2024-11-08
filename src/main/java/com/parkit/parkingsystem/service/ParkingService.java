@@ -47,6 +47,7 @@ public class ParkingService {
                 ticketDAO.saveTicket(ticket);
 
                 if (ticketDAO.getNbTicket(vehicleRegNumber) > 1) {
+                    //Afficher le messqge de bienvenue  si au moin un ticket a deja ete donnee.
                     System.out.println("Heureux de vous revoir ! En tant qu utilisateur régulier de notre parking, vous allez obtenir une remise de 5%\", puis le système reprend son fonctionnement habituel.");
                 }
                 System.out.println("Generated Ticket and saved in DB");
@@ -109,6 +110,7 @@ public class ParkingService {
             Date outTime = new Date();
             ticket.setOutTime(outTime);
 
+            //Appelle la methode claculateFare si le nombre de tichets est > 1 pour une plaque de registration
             if(ticketDAO.getNbTicket(vehicleRegNumber) > 1) {
                 fareCalculatorService.calculateFare(ticket, true);
             } else {

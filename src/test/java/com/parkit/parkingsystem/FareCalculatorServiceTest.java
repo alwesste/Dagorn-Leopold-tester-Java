@@ -123,7 +123,8 @@ public class FareCalculatorServiceTest {
         fareCalculatorService.calculateFare(ticket);
         assertEquals( (24 * Fare.CAR_RATE_PER_HOUR) , ticket.getPrice());
     }
-
+    
+    // Calcul pour les 30 minutes gratuites
     @Test
     public void calculateFareCarWithLessThan30minutes() {
         Date inTime = new Date();
@@ -138,6 +139,7 @@ public class FareCalculatorServiceTest {
         assertEquals(0, ticket.getPrice());
     }
 
+    // Calcul pour les 30 minutes gratuites
     @Test
     public void calculateFareBikeWithLessThan30minutes() {
         Date inTime = new Date();
@@ -152,6 +154,8 @@ public class FareCalculatorServiceTest {
         assertEquals(0, ticket.getPrice());
     }
 
+
+    // Calcul discount pour voiture
     @Test
     public void calculateFareCarWithDiscountDescription() {
         Date inTime = new Date();
@@ -166,6 +170,7 @@ public class FareCalculatorServiceTest {
         assertEquals((Fare.CAR_RATE_PER_HOUR * 0.95), ticket.getPrice()); 
     }
 
+    // Calcul discount pour moto
     @Test
     public void calculateFareBikeWithDiscountDescription() {
         Date inTime = new Date();
