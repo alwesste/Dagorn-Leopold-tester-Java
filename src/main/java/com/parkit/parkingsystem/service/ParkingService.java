@@ -27,7 +27,7 @@ public class ParkingService {
         this.ticketDAO = ticketDAO;
     }
 
-    public void processIncomingVehicle() {
+    public void processIncomingVehicle(Date inTime) {
         try{
             ParkingSpot parkingSpot = getNextParkingNumberIfAvailable();
             if(parkingSpot !=null && parkingSpot.getId() > 0){
@@ -35,7 +35,6 @@ public class ParkingService {
                 parkingSpot.setAvailable(false);
                 parkingSpotDAO.updateParking(parkingSpot);//allot this parking space and mark it's availability as false
 
-                Date inTime = new Date();
                 Ticket ticket = new Ticket();
                 //ID, PARKING_NUMBER, VEHICLE_REG_NUMBER, PRICE, IN_TIME, OUT_TIME)
                 //ticket.setId(ticketID);
@@ -47,7 +46,7 @@ public class ParkingService {
                 ticketDAO.saveTicket(ticket);
 
                 if (ticketDAO.getNbTicket(vehicleRegNumber) > 1) {
-                    //Afficher le messqge de bienvenue  si au moin un ticket a deja ete donnee.
+                    //Afficher le message de bienvenue  si au moin un ticket a deja ete donnee.
                     System.out.println("Heureux de vous revoir ! En tant qu utilisateur régulier de notre parking, vous allez obtenir une remise de 5%\", puis le système reprend son fonctionnement habituel.");
                 }
                 System.out.println("Generated Ticket and saved in DB");
@@ -102,7 +101,8 @@ public class ParkingService {
         }
     }
 
-    public void processExitingVehicle() {
+   
+ public void processExitingVehicle(Date inTime) {
         
         try{
             String vehicleRegNumber = getVehichleRegNumber();

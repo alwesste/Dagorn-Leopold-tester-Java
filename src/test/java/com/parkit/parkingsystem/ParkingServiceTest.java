@@ -39,7 +39,7 @@ public class ParkingServiceTest {
     private static TicketDAO ticketDAO;
 
     @BeforeEach
-    private void setUpPerTest() {
+    public void setUpPerTest() {
         try {
             when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
 
@@ -67,7 +67,7 @@ public class ParkingServiceTest {
         when(parkingSpotDAO.getNextAvailableSlot(any(ParkingType.class))).thenReturn(1);
         when(inputReaderUtil.readSelection()).thenReturn(1);
         // act
-        parkingService.processIncomingVehicle();
+        parkingService.processIncomingVehicle(new Date());
         // assert
         verify(ticketDAO, Mockito.times(1)).saveTicket(any(Ticket.class));
     }
@@ -77,10 +77,10 @@ public class ParkingServiceTest {
         // arrange
         when(ticketDAO.updateTicket(any(Ticket.class))).thenReturn(false);      
         // act
-        parkingService.processExitingVehicle();
+        parkingService.processExitingVehicle(new Date());
         // assert
         verify(ticketDAO, Mockito.times(1)).updateTicket(any(Ticket.class));
-        verify(parkingSpotDAO, never()).updateParking(any(ParkingSpot.class)); // En option pour tester que ce updtaeParking n'est jamais appeler !
+        verify(parkingSpotDAO, never()).updateParking(any(ParkingSpot.class)); // En option pour tester que updtateParking n'est jamais appeler !
     }
 
     @Test
@@ -127,7 +127,7 @@ public class ParkingServiceTest {
 
         // ACT
         // Gere la sortie du vehicule
-        parkingService.processExitingVehicle();
+        parkingService.processExitingVehicle(new Date());
 
         // Assert
         // Verifie la methode updateParking quand n'importe quel vehicule sort.

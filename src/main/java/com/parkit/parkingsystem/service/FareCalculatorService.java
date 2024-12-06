@@ -5,6 +5,7 @@ import com.parkit.parkingsystem.model.Ticket;
 
 public class FareCalculatorService {
 
+    //permet le fonctionnement avec ou sans discount
     public void calculateFare(Ticket ticket) 
     {
         calculateFare(ticket, false);
@@ -15,7 +16,9 @@ public class FareCalculatorService {
         if( (ticket.getOutTime() == null) || (ticket.getOutTime().before(ticket.getInTime())) ){
             throw new IllegalArgumentException("Out time provided is incorrect:"+ticket.getOutTime().toString());
         }
-
+        //resoudre le bug sur le calcul du prix
+        //retirer la methode depressier getHours() pour getTime()
+        //Changer les "int" pour des "double"
         double inHour = ticket.getInTime().getTime();
         double outHour = ticket.getOutTime().getTime();
 
